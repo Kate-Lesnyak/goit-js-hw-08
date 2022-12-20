@@ -17,6 +17,8 @@ getFormInput();
 
 const formData = {};
 
+
+// TODO 1 вариант функций
 function onFormInput(e) {
 	formData[e.target.name] = e.target.value;
 	localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
@@ -26,9 +28,12 @@ function getFormInput() {
 	try {
 		const currentFormData = JSON.parse(localStorage.getItem(STORAGE_KEY));
 		if (currentFormData) {
-			// console.log(currentFormData);
-			form.elements.email.value = currentFormData.email;
-			form.elements.message.value = currentFormData.message;
+			if (currentFormData.email) {
+				form.elements.email.value = currentFormData.email;
+			}
+			if (currentFormData.message) {
+				form.elements.message.value = currentFormData.message;
+			}
 		}
 	}
 	catch (error) {
@@ -43,6 +48,7 @@ function onFormSubmit(e) {
 	const {
 		elements: { email, message }
 	} = e.currentTarget;
+
 	formData.email = email.value;
 	formData.message = message.value;
 
@@ -54,3 +60,39 @@ function onFormSubmit(e) {
 	e.currentTarget.reset();
 	localStorage.removeItem(STORAGE_KEY);
 }
+
+
+// TODO 2 вариант функций
+// function onFormInput(e) {
+// 	formData.email = form.elements.email.value;
+// 	formData.message = form.elements.message.value;
+
+// 	localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
+// }
+
+// function getFormInput() {
+// 	try {
+// 		const currentFormData = JSON.parse(localStorage.getItem(STORAGE_KEY));
+// 		if (currentFormData) {
+// 			form.elements.email.value = currentFormData.email;
+// 			form.elements.message.value = currentFormData.message;
+// 		}
+// 	}
+// 	catch (error) {
+// 		console.log(error.name);
+// 		console.log(error.message);
+// 	}
+// }
+
+// function onFormSubmit(e) {
+// 	e.preventDefault();
+// 	const emailSubmit = e.target.email.value;
+// 	const messageSubmit = e.target.message.value;
+// 	if (!emailSubmit || !messageSubmit) {
+// 		return alert('Заполните, пожалуйста, все поля!')
+// 	}
+
+// 	console.log(formData);
+// 	e.currentTarget.reset();
+// 	localStorage.removeItem(STORAGE_KEY);
+// }
