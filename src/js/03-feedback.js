@@ -4,6 +4,8 @@
 // При сабмите формы очищай хранилище и поля формы, а также выводи объект с полями email, message и текущими их значениями в консоль.
 // Сделай так, чтобы хранилище обновлялось не чаще чем раз в 500 миллисекунд.Для этого добавь в проект и используй библиотеку lodash.throttle.
 
+// TODO 1 вариант
+
 import throttle from 'lodash.throttle';
 
 const STORAGE_KEY = 'feedback-form-state';
@@ -15,12 +17,18 @@ form.addEventListener('submit', onFormSubmit);
 
 getFormInput();
 
-const formData = {};
+const {
+	elements: { email, message }
+} = form;
 
+const formData = {
+	email: email.value,
+	message: message.value,
+};
 
-// TODO 1 вариант функций
-function onFormInput(e) {
-	formData[e.target.name] = e.target.value;
+function onFormInput() {
+	formData.email = form.elements.email.value;
+	formData.message = form.elements.message.value;
 	localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
 }
 
@@ -28,12 +36,8 @@ function getFormInput() {
 	try {
 		const currentFormData = JSON.parse(localStorage.getItem(STORAGE_KEY));
 		if (currentFormData) {
-			if (currentFormData.email) {
-				form.elements.email.value = currentFormData.email;
-			}
-			if (currentFormData.message) {
-				form.elements.message.value = currentFormData.message;
-			}
+			form.elements.email.value = currentFormData.email;
+			form.elements.message.value = currentFormData.message;
 		}
 	}
 	catch (error) {
@@ -45,13 +49,6 @@ function getFormInput() {
 function onFormSubmit(e) {
 	e.preventDefault();
 
-	const {
-		elements: { email, message }
-	} = e.currentTarget;
-
-	formData.email = email.value;
-	formData.message = message.value;
-
 	if (!formData.email || !formData.message) {
 		return alert('Заполните, пожалуйста, все поля!')
 	}
@@ -62,8 +59,21 @@ function onFormSubmit(e) {
 }
 
 
-// TODO 2 вариант функций
-// function onFormInput(e) {
+// TODO 2 вариант
+// import throttle from 'lodash.throttle';
+
+// const STORAGE_KEY = 'feedback-form-state';
+
+// const form = document.querySelector('.feedback-form');
+
+// form.addEventListener('input', throttle(onFormInput, 500));
+// form.addEventListener('submit', onFormSubmit);
+
+// getFormInput();
+
+// const formData = {};
+
+// function onFormInput() {
 // 	formData.email = form.elements.email.value;
 // 	formData.message = form.elements.message.value;
 
